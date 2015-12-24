@@ -1,0 +1,25 @@
+window.sip_conf  = {
+  log: { level: 'debug' },
+  uri: 'sip:test@{{ ansible_default_ipv4["address"] }}:5090',
+  password:  null,
+  ws_servers:  'wss://{{ ansible_default_ipv4["address"] }}:10443',
+  display_name: 'TEST',
+  register: true,
+  register_expires: 600,
+  registrar_server: '',
+  no_answer_timeout: 60,
+  session_timers: true,
+  use_preloaded_route: false,
+  connection_recovery_min_interval: 2,
+  connection_recovery_max_interval: 30,
+  hack_via_tcp: false,
+  hack_via_ws: false,
+  hack_ip_in_contact: false
+};
+
+
+window.peerconnection_config = JSON.parse('{ "iceServers": [ {"urls": ["stun:stun.l.google.com:19302"]} ], "gatheringTimeout": 2000 }');
+
+//{ "iceServers": [ {"urls": ["stun:stun.l.google.com:19302"]} ], "gatheringTimeout": 2000 }
+
+window.my_addr = '{{ ansible_default_ipv4["address"] }}';

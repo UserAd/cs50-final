@@ -1,0 +1,35 @@
+- name: Obtaining kamailio public key
+  apt_key: keyserver=keyserver.ubuntu.com id=0xfb40d3e6508ea4c8 state=present
+
+- name: Adding kamailio repository
+  apt_repository: repo="deb http://deb.kamailio.org/kamailiodev-nightly {{ ansible_distribution_release }} main" state=present
+
+- name: Adding kamailio source repository
+  apt_repository: repo="deb-src http://deb.kamailio.org/kamailiodev-nightly {{ ansible_distribution_release }} main" state=present
+
+- name: Install kamailio with dependencies
+  action: apt pkg={{ item }}
+    state=present
+    update_cache=yes
+    cache_valid_time=3600
+
+  with_items:
+    - kamailio
+    - kamailio-json-modules
+    - kamailio-websocket-modules
+# Not usable, need rtpengine
+#    - rtpproxy
+    - kamailio-tls-modules
+
+
+- name: create self-signd SSL
+  command: openssl req -new -nodes -x509 -subj "/C=US/ST=Oregon/L=Portland/O=HornsAndHoofs/CN={{ ansible_fqdn }}" -days 3650 -keyout /etc/kamailio/kamailio-selfsigned.key -out /etc/kamailio/kamailio-selfsigned.pem -extensions v3_ca creates=/etc/kamailio/kamailio-selfsigned.pem
+
+#- name: Copy rtpproxy config file
+#  template: src=rtpproxy.j2 dest=/etc/default/rtpproxy owner=root group=root mode=0600
+
+- name: Copy kamailio config file
+  template: src=kamailio.cfg.j2 dest=/etc/kamailio/kamailio.cfg owner=root group=root mode=0600
+
+- name: Enable kamailio
+  lineinfile: dest=/etc/default/kamailio line="RUN_KAMAILIO=yes"

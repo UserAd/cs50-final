@@ -1,0 +1,9 @@
+- hosts: ws
+  roles:
+    - common
+    - kamailio_ws
+    - app
+  vars:
+    #Echo test
+    sip_user: "4151595"
+    sip_host: "157.157.129.24:5060"

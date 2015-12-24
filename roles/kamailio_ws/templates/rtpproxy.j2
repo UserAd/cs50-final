@@ -1,0 +1,9 @@
+# Defaults for rtpproxy
+
+# The control socket.
+#CONTROL_SOCK="unix:/var/run/rtpproxy/rtpproxy.sock"
+# To listen on an UDP socket, uncomment this line:
+CONTROL_SOCK=udp:127.0.0.1:22222
+
+# Additional options that are passed to the daemon.
+EXTRA_OPTS="-l {{ ansible_default_ipv4["address"] }} -m 30000 -M 35000"

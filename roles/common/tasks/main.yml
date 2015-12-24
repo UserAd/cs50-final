@@ -1,0 +1,28 @@
+---
+- name: install common packages
+  apt: pkg={{ item }}
+       state=present
+       update_cache=yes
+       cache_valid_time=3600
+  with_items:
+    - htop
+    - git
+    - vim
+    - iotop
+    - mtr-tiny
+    - build-essential
+    - mc
+    - iperf
+    - curl
+    - iptables-persistent
+    - screen
+    - tcpdump
+    - sudo
+    - python-pip
+    - supervisor
+
+- name: add bash alias
+  lineinfile:
+    dest: /etc/bash.bashrc
+    regexp: ^alias ll='ls -l --color'
+    line: alias ll='ls -l --color'
